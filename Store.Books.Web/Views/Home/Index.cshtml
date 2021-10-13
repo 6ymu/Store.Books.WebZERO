@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Store.Books.Domain.Book>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@{
+    if (Model is null || !Model.Any())
+    {
+        <p>Книг нет и не будет, магазин закрыт!</p>
+    }
+    else
+    {
+        if (ViewBag.Authors is null)
+        {
+            <hr />
+        }
+        else
+        {
+            var authors = ViewBag.Authors as IEnumerable<Store.Books.Domain.Author>;
+            foreach (var author in authors)
+            {
+                <span>@author.FirstName </span>
+            }
+            <hr />
+            foreach (var book in Model)
+            {
+                <form asp-controller="Order" asp-action="Buy" method="post">
+                    <div class="card">
+                        <div class="card-body">
+                            <p>@book.Title</p>
+                            <p>@book.Year</p>
+                        </div>
+                    </div>
+                    <input type="hidden" name="bookId" value="@book.Id" />
+                    Юзер: <input type="text" name="userName" value="TEST" />
+                    <input type="submit" value="КУПИ МЕНЯ!" />
+                </form>
+            }
+        }
+    }
+
+}
